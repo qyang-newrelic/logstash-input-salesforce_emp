@@ -74,10 +74,9 @@ public class SalesforceEMP implements Input {
         host = config.get(SFDC_HOST_CONFIG);
         eventname = config.get(SFDC_EVENT_CONFIG);
 	}
-	logger.info("username:" + username);
+	//logger.info("username:" + username);
 	logger.info("host:" + host);
 	logger.info("eventname:" + eventname);
-	logger.info("byby");
     }
 
     @Override
@@ -95,11 +94,12 @@ public class SalesforceEMP implements Input {
 
         Consumer<Map<String, Object>> sfdcConsumer = event -> {
 					logger.info(String.format("Received:\n%s", JSON.toString(event)));
-					//Map<String,String> atts = new HashMap();
-					//event.put("channel",eventname);
-					//event.put("service_name","Salesforce Platform Event");
-					//event.put("source",host);
-    				consumer.accept(event);
+					Map<String,Object> msg = new HashMap();
+					msg.put("nr_channel",eventname);
+					msg.put("service_name","Salesforce Platform Event");
+					msg.put("nr_source",host);
+					msg.put("message", event.get((Object) "payload"));
+    			consumer.accept(msg);
 					};
 
         TopicSubscription subscription; 
