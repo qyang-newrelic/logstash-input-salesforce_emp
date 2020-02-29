@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 build
 bin
 *.idea
@@ -18,3 +19,19 @@ out/
 Gemfile*
 settings.gradle
 gradle.properties
+=======
+.gradle
+/build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+>>>>>>> 50dfcd96e3c6ad117a506d57b301181167985e72
