@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 build
 bin
 *.idea
@@ -34,4 +33,3 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
->>>>>>> 50dfcd96e3c6ad117a506d57b301181167985e72
