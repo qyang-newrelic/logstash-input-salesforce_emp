@@ -63,20 +63,19 @@ public class SalesforceEMP implements Input {
     // all plugins must provide a constructor that accepts id, Configuration, and Context
     public SalesforceEMP(String id, Configuration config, Context context) {
         // constructors should validate configuration options
-	logger.info("init");
+				logger.info("init");
 
         this.id = id;
-	if (config == null ) {
-		logger.error("no config");
-	} else {
-        username = config.get(SFDC_USERNAME_CONFIG);
-        password = config.get(SFDC_PASSWORD_CONFIG);
-        host = config.get(SFDC_HOST_CONFIG);
-        eventname = config.get(SFDC_EVENT_CONFIG);
-	}
-	//logger.info("username:" + username);
-	logger.info("host:" + host);
-	logger.info("eventname:" + eventname);
+				if (config == null ) {
+					logger.error("no config");
+				} else {
+       	 username = config.get(SFDC_USERNAME_CONFIG);
+       	 password = config.get(SFDC_PASSWORD_CONFIG);
+       	 host = config.get(SFDC_HOST_CONFIG);
+       	 eventname = config.get(SFDC_EVENT_CONFIG);
+				}
+				logger.info("host:" + host);
+				logger.info("eventname:" + eventname);
     }
 
     @Override
@@ -93,14 +92,14 @@ public class SalesforceEMP implements Input {
 
 
         Consumer<Map<String, Object>> sfdcConsumer = event -> {
-					logger.info(String.format("Received:\n%s", JSON.toString(event)));
+					logger.info(String.format("Received from : %s", eventname));
 					Map<String,Object> msg = new HashMap();
 					msg.put("nr_channel",eventname);
 					msg.put("service_name","Salesforce Platform Event");
 					msg.put("nr_source",host);
 					msg.put("message", event.get((Object) "payload"));
     			consumer.accept(msg);
-					};
+				};
 
         TopicSubscription subscription; 
 
@@ -121,10 +120,10 @@ public class SalesforceEMP implements Input {
 
         	connector.start().get(5, TimeUnit.SECONDS);
 
-             	long replayFrom = EmpConnector.REPLAY_FROM_EARLIEST;
+          long replayFrom = EmpConnector.REPLAY_FROM_EARLIEST;
 
        
-            	subscription = connector.subscribe(eventname, replayFrom, sfdcConsumer).get(5, TimeUnit.SECONDS);
+          subscription = connector.subscribe(eventname, replayFrom, sfdcConsumer).get(5, TimeUnit.SECONDS);
         	logger.info(String.format("Subscribed: %s", subscription));
         } catch (ExecutionException e) {
             logger.error(e.getCause().toString());
@@ -136,24 +135,23 @@ public class SalesforceEMP implements Input {
             //System.exit(1);
             //throw e.getCause();
         } catch (Exception e) {
-	   logger.error("Error subscribing");
+	   				logger.error("Error subscribing");
             logger.error(e.getCause().toString());
             stopped = true;
             done.countDown();
-	}
+				}
 
 
         //int eventCount = 0;
         try {
             while (!stopped) {
                 //eventCount++;
-		Thread.sleep(10000);
-                //consumer.accept(Collections.singletonMap("message", prefix + " " + StringUtils.center(eventCount + " of " + count, 20)));
+								Thread.sleep(10000);
             }
         } catch (Exception e) {
             logger.error(e.getCause().toString());
-	}
-	finally {
+				}
+				finally {
             stopped = true;
             done.countDown();
         }
